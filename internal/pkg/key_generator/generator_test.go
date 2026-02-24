@@ -54,7 +54,7 @@ func TestGenerate(t *testing.T) {
 			} else {
 				require.NoError(t, err)
 				require.NotEmpty(t, token)
-			}
+			}	
 		})
 	}
 }

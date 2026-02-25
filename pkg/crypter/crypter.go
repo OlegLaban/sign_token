@@ -5,14 +5,10 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"encoding/base64"
 	"errors"
 	"io"
 )
-
-type Crypter interface {
-	Encrypt(string) ([]byte, error)
-	Decrypt(string) (string, error)
-}
 
 type crypter struct {
 	key []byte
@@ -24,11 +20,11 @@ func New(key string) *crypter {
 	}
 }
 
-func (c *crypter) Encrypt(text string) ([]byte, error) {
+func (c *crypter) Encrypt(text string) (string, error) {
 	textByte := []byte(text)
 	block, err := aes.NewCipher(c.key)
 	if err != nil {
-		return nil, errors.Join(ErrBlockCreate, err)
+		return "", errors.Join(ErrBlockCreate, err)
 	}
 
 	padding := aes.BlockSize - len(textByte)%aes.BlockSize
@@ -37,22 +33,26 @@ func (c *crypter) Encrypt(text string) ([]byte, error) {
 	ciphertext := make([]byte, aes.BlockSize+len(padText))
 	iv := ciphertext[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		return nil, errors.Join(err)
+		return "", errors.Join(err)
 	}
 
 	mode := cipher.NewCBCEncrypter(block, iv)
 	mode.CryptBlocks(ciphertext[aes.BlockSize:], padText)
 
-	return ciphertext, nil
+	return base64.StdEncoding.EncodeToString(ciphertext), nil
 }
 
-func (c *crypter) Decrypt(ciphertext []byte) ([]byte, error) {
+func (c *crypter) Decrypt(ciptext string) (string, error) {
+	ciphertext, err := base64.StdEncoding.DecodeString(ciptext)
+	if err != nil {
+		return "", errors.Join(ErrInvalidBase64, err)
+	}
 	block, err := aes.NewCipher(c.key)
 	if err != nil {
-		return nil, errors.Join(ErrBlockCreate, err)
+		return "", errors.Join(ErrBlockCreate, err)
 	}
 	if len(ciphertext) < aes.BlockSize {
-		return nil, errors.Join(ErrTextToShort, err)
+		return "", errors.Join(ErrTextToShort, err)
 	}
 
 	iv := ciphertext[:aes.BlockSize]
@@ -62,5 +62,5 @@ func (c *crypter) Decrypt(ciphertext []byte) ([]byte, error) {
 	mode.CryptBlocks(ciphertext, ciphertext)
 
 	padding := int(ciphertext[len(ciphertext)-1])
-	return ciphertext[:len(ciphertext)-padding], nil
+	return string(ciphertext[:len(ciphertext)-padding]), nil
 }

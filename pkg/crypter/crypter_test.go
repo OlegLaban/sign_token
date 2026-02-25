@@ -22,9 +22,15 @@ func TestEncryptAndDecrypt(t *testing.T) {
 			Input: "some-insensitive-info",
 		},
 		{
+			Name:          "Base64 error",
+			Input:         "some-insensitive-info",
+			CustomDecrypt: "invalid-base-64-text",
+			DecryptErr:    ErrInvalidBase64,
+		},
+		{
 			Name:          "Decrypt error",
 			Input:         "some-insensitive-info",
-			CustomDecrypt: "invalid",
+			CustomDecrypt: "MTI=",
 			DecryptErr:    ErrTextToShort,
 		},
 	}
@@ -39,13 +45,13 @@ func TestEncryptAndDecrypt(t *testing.T) {
 				require.NoError(t, err)
 				require.NotEmpty(t, res)
 				if tt.CustomDecrypt != "" {
-					res = []byte(tt.CustomDecrypt)
+					res = tt.CustomDecrypt
 				}
 				res, err := crypt.Decrypt(res)
 				if tt.DecryptErr != nil {
 					require.ErrorIs(t, err, tt.DecryptErr)
 				} else {
-					require.Equal(t, res, []byte(tt.Input))
+					require.Equal(t, res, tt.Input)
 				}
 			}
 		})

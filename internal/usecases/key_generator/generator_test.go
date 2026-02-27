@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/OlegLaban/sing_token/internal/domain"
-	"github.com/OlegLaban/sing_token/internal/pkg/key_generator/mocks"
+	"github.com/OlegLaban/sing_token/internal/usecases/key_generator/mocks"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )

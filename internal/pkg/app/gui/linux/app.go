@@ -10,7 +10,7 @@ import (
 	"github.com/OlegLaban/sing_token/internal/adapter/config"
 	"github.com/OlegLaban/sing_token/internal/adapter/logger"
 	"github.com/OlegLaban/sing_token/internal/domain"
-	keygenerator "github.com/OlegLaban/sing_token/internal/pkg/key_generator"
+	keygenerator "github.com/OlegLaban/sing_token/internal/usecases/key_generator"
 	"github.com/OlegLaban/sing_token/pkg/crypter"
 )
 

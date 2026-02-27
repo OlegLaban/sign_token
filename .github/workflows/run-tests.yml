@@ -21,9 +21,6 @@ jobs:
         with:
           go-version: "1.24.2"
 
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v2
-
       - name: Install OpenGL and GLFW dependencies
         run: |
           sudo apt update
@@ -40,8 +37,8 @@ jobs:
       - name: Install dependencies
         run: go mod tidy
 
-      - name: Run golang-ci
-        run: golangci-lint run config ./config/linter.yml
+      - name: Setup golangci-lint
+        uses: golangci/golangci-lint-action@v2
 
       - name: Run tests
         run: go test ./...

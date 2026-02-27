@@ -22,7 +22,7 @@ jobs:
           go-version: "1.24.2"
 
       - name: Run golangci-lint
-        uses: actions/golangci-lint@v2
+        uses: golangci/golangci-lint-action@v2
 
       - name: Install OpenGL and GLFW dependencies
         run: |
@@ -35,9 +35,7 @@ jobs:
             libxcursor-dev \
             libxi-dev \
             libxrandr-dev \
-            libx11-xcb-dev \
-            curl
-          curl -sSfL https://golangci-lint.run/install.sh | sh -s v2.10.1
+            libx11-xcb-dev
 
       - name: Install dependencies
         run: go mod tidy

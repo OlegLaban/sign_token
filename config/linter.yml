@@ -1,0 +1,17 @@
+version: "2"
+linters:
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+
+run:
+  tests: true
+  expired: true
+
+issues:
+  exclude-use-default: false
+  exclude:
+    - "error return value not checked"

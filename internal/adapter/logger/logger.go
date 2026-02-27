@@ -18,6 +18,10 @@ func (l *logger) Debugf(s string, arg ...any) {
 	log.Default().Printf("[DEBUG] "+s+"\n", arg...)
 }
 
+func (l *logger) Debug(s string) {
+	log.Default().Println("[DEBUG] " + s)
+}
+
 func (l *logger) Error(s string, err error) {
 	log.Default().Print("[ERROR]"+s+"\n", err.Error())
 }

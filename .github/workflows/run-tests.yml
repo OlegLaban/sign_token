@@ -26,8 +26,8 @@ jobs:
 
       - name: Install OpenGL and GLFW dependencies
         run: |
-          sudo apt update
-          sudo apt install -y \
+          sudo apt-get update
+          sudo apt-get install -y \
             libgl1-mesa-dev \
             libglfw3-dev \
             libx11-dev \
@@ -41,7 +41,7 @@ jobs:
         run: go mod tidy
 
       - name: Run golangci-lint
-        run: golangci-lint run --timeout=5m
+        run: golangci-lint run config ./config/linter.yml --timeout=5m
 
       - name: Run tests
         run: go test ./...

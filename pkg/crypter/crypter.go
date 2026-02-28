@@ -43,10 +43,10 @@ func (c *crypter) Encrypt(text string) (string, error) {
 }
 
 func (c *crypter) Decrypt(ciptext string) (string, error) {
-	ciphertext, err := base64.StdEncoding.DecodeString(ciptext)
-	if err != nil {
-		return "", errors.Join(ErrInvalidBase64, err)
-	}
+	ciphertext, _ := base64.StdEncoding.DecodeString(ciptext)
+	// if err != nil {
+	// 	return "", errors.Join(ErrInvalidBase64, err)
+	// }
 	block, err := aes.NewCipher(c.key)
 	if err != nil {
 		return "", errors.Join(ErrBlockCreate, err)

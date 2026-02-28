@@ -43,7 +43,7 @@ func (la *linuxAPP) Run(configPath string) {
 	w.SetContent(container.NewVBox(cont, input, widget.NewButton("Send", func() {
 		cryptKey, err := generator.Generate(domain.NewPayload(input.Text, int(time.Now().Unix())))
 		if err != nil {
-			l.Error("can`t generator", err)
+			l.Error("can`t generate key", err)
 			return
 		}
 		err = s.PutKey(cryptKey)

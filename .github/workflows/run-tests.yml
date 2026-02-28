@@ -41,7 +41,7 @@ jobs:
         run: go mod tidy
 
       - name: Run golangci-lint
-        run: golangci-lint run config ./config/linter.yml --timeout=5m
+        run: golangci-lint run -c ./config/linter.yml --timeout=5m
 
       - name: Run tests
         run: go test ./...

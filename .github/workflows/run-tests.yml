@@ -19,15 +19,18 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: "1.24.2"
+          go-version: "1.25.6"
+      - name: Install system dependencies
+        run: sudo apt-get install curl
 
       - name: Install golangci-lint
-        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+        run: curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.10.1
+        #run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 
       - name: Install OpenGL and GLFW dependencies
         run: |
-          sudo apt update
-          sudo apt install -y \
+          sudo apt-get update
+          sudo apt-get install -y \
             libgl1-mesa-dev \
             libglfw3-dev \
             libx11-dev \
@@ -41,7 +44,7 @@ jobs:
         run: go mod tidy
 
       - name: Run golangci-lint
-        run: golangci-lint run --timeout=5m
+        run: golangci-lint run -c ./config/linter.yml --timeout=5m
 
       - name: Run tests
         run: go test ./...
